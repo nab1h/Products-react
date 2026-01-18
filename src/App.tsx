@@ -1,16 +1,31 @@
 import "./App.css";
 import ProductCard from "./components/ProductCard";
-import { productList } from "./data";
-import type { IProduct } from "./interfaces";
+import { productList, formInputList } from "./data";
+import type { IFormInput, IProduct } from "./interfaces";
 import Button from "./components/ui/Button";
-import { useState } from 'react'
+import Input from "./components/ui/Input";
+import { useState } from "react";
 import Modal from "./components/ui/Modal";
 function App() {
+const defaultProductObj = {
+    title: "",
+    description: "",
+    imageURL: "",
+    price: "",
+    colors: [],
+    category: {
+      name: "",
+      imageURL: "",
+    },
+};
   // *------------STATE-----------------------
-    const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false);
+  const [newProduct , setNewProduct] = useState<IProduct>(defaultProductObj);
+
+
   // *------------HANDLER-----------------------
-    const open=()=> setIsOpen(true);
-    const close=()=> setIsOpen(false);
+  const open = () => setIsOpen(true);
+  const close = () => setIsOpen(false);
   // *------------RENDER-----------------------
   const product: IProduct[] = productList;
   const renderProductList = product.map((product) => (
@@ -22,21 +37,36 @@ function App() {
       price={product.price}
     />
   ));
+  const input: IFormInput[] = formInputList;
+  const renderFormInput = input.map((input) => (
+    <div className="flex flex-col space-x-3 mb-5" key={input.id}>
+      <label htmlFor={input.name}>{input.label}</label>
+      <Input placeholder={input.label} id={input.name}  />
+    </div>
+  ));
 
   // =============================================================================================
   return (
     <>
       <div className="container mx-auto my-16 p-4">
-        
         <Modal isOpen={isOpen} closeModal={close} title="Add Product">
-          <div className="flex space-x-3.5">
-            <Button name="submit" colorBtn="green" />
-            <Button name="colse" colorBtn="red" onClick={close}/>
-          </div>
+          <form>
+            {renderFormInput}
+            <div className="flex space-x-3">
+              <Button name="submit" colorBtn="green" />
+              <Button name="colse" type="button" colorBtn="red" onClick={close} />
+            </div>
+          </form>
         </Modal>
-        <Button colorBtn="blue" name="Add Product" className="mb-5" onClick={open}/>
+        <Button
+          colorBtn="blue"
+          name="Add Product"
+          className="mb-5"
+          onClick={open}
+        />
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {renderProductList}
+          <Input />
         </div>
       </div>
     </>
