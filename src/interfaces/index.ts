@@ -4,8 +4,8 @@ export interface IProduct {
   description: string;
   imageURL: string;
   price: string;
-  colors: string[];
-  category: {
+  colors?: string[];
+  category?: {
     name: string;
     imageURL: string;
   };
@@ -13,7 +13,8 @@ export interface IProduct {
 
 export interface IFormInput {
   id: string;
-  name: string;
+  name: keyof Pick<IProduct, "title" | "description" | "price" | "imageURL">;
   label: string;
-  type: string;
+  type?: string;
 }
+

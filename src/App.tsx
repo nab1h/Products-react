@@ -4,7 +4,8 @@ import { productList, formInputList } from "./data";
 import type { IFormInput, IProduct } from "./interfaces";
 import Button from "./components/ui/Button";
 import Input from "./components/ui/Input";
-import { useState } from "react";
+import {useState } from "react";
+import type {FormEvent,ChangeEvent} from 'react';
 import Modal from "./components/ui/Modal";
 function App() {
 const defaultProductObj = {
@@ -26,6 +27,17 @@ const defaultProductObj = {
   // *------------HANDLER-----------------------
   const open = () => setIsOpen(true);
   const close = () => setIsOpen(false);
+  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>{
+  const {value , name} = event.target;
+  setNewProduct(prev => ({
+    ...prev,
+    [name]: value
+  }));
+  }
+  const submitHandler =(event: FormEvent<HTMLFormElement>):void=>{
+    event.preventDefault();
+    console.log(newProduct);
+  }
   // *------------RENDER-----------------------
   const product: IProduct[] = productList;
   const renderProductList = product.map((product) => (
@@ -41,7 +53,7 @@ const defaultProductObj = {
   const renderFormInput = input.map((input) => (
     <div className="flex flex-col space-x-3 mb-5" key={input.id}>
       <label htmlFor={input.name}>{input.label}</label>
-      <Input placeholder={input.label} id={input.name}  />
+      <Input placeholder={input.label} id={input.name} value={newProduct[input.name]} onChange={onChangeHandler} />
     </div>
   ));
 
@@ -50,7 +62,7 @@ const defaultProductObj = {
     <>
       <div className="container mx-auto my-16 p-4">
         <Modal isOpen={isOpen} closeModal={close} title="Add Product">
-          <form>
+          <form onSubmit={submitHandler}>
             {renderFormInput}
             <div className="flex space-x-3">
               <Button name="submit" colorBtn="green" />
@@ -66,11 +78,9 @@ const defaultProductObj = {
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {renderProductList}
-          <Input />
         </div>
       </div>
     </>
   );
 }
-
 export default App;
