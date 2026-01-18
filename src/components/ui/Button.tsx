@@ -1,5 +1,5 @@
-
-interface Iprops {
+import type { ButtonHTMLAttributes } from 'react';
+interface Iprops extends ButtonHTMLAttributes<HTMLButtonElement>{
     name: string,
     colorBtn: 'blue' | 'green' | 'red',
     className?: string,
