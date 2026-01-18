@@ -28,7 +28,7 @@ function App() {
     <>
       <div className="container mx-auto my-16 p-4">
         
-        <Modal isOpen={isOpen} closeModal={close}>
+        <Modal isOpen={isOpen} closeModal={close} title="Add Product">
           <div className="flex space-x-3.5">
             <Button name="submit" colorBtn="green" />
             <Button name="colse" colorBtn="red" onClick={close}/>
