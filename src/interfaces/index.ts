@@ -13,7 +13,7 @@ export interface IProduct {
 
 export interface IFormInput {
   id: string;
-  name: keyof Pick<IProduct, "title" | "description" | "price" | "imageURL">;
+  name: "title" | "description" | "price" | "imageURL";
   label: string;
   type?: string;
 }

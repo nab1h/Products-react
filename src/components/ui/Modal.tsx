@@ -19,7 +19,7 @@ const Modal =({isOpen,closeModal,children,title}:IProps) =>{
               <DialogTitle as="h3" className="text-base/7 font-medium text-white">
                 {title}
               </DialogTitle>
-              
+            
             {children}
             </DialogPanel>
           </div>

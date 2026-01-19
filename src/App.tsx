@@ -4,7 +4,7 @@ import { productList, formInputList } from "./data";
 import type { IFormInput, IProduct } from "./interfaces";
 import Button from "./components/ui/Button";
 import Input from "./components/ui/Input";
-import {useState } from "react";
+import {useState} from "react";
 import type {FormEvent,ChangeEvent} from 'react';
 import Modal from "./components/ui/Modal";
 function App() {
@@ -19,9 +19,11 @@ const defaultProductObj = {
       imageURL: "",
     },
 };
+
+
   // *------------STATE-----------------------
   const [isOpen, setIsOpen] = useState(false);
-  const [newProduct , setNewProduct] = useState<IProduct>(defaultProductObj);
+  const [Product , setProduct] = useState<IProduct>(defaultProductObj);
 
 
   // *------------HANDLER-----------------------
@@ -29,18 +31,20 @@ const defaultProductObj = {
   const close = () => setIsOpen(false);
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) =>{
   const {value , name} = event.target;
-  setNewProduct(prev => ({
-    ...prev,
+  setProduct({
+    ... Product,
     [name]: value
-  }));
+  });
+
   }
   const submitHandler =(event: FormEvent<HTMLFormElement>):void=>{
     event.preventDefault();
-    console.log(newProduct);
+    setProduct(defaultProductObj);
+    console.log(Product);
   }
   // *------------RENDER-----------------------
-  const product: IProduct[] = productList;
-  const renderProductList = product.map((product) => (
+ 
+  const renderProductList = productList.map((product) => (
     <ProductCard
       key={product.id}
       title={product.title}
@@ -49,11 +53,12 @@ const defaultProductObj = {
       price={product.price}
     />
   ));
+
   const input: IFormInput[] = formInputList;
   const renderFormInput = input.map((input) => (
     <div className="flex flex-col space-x-3 mb-5" key={input.id}>
       <label htmlFor={input.name}>{input.label}</label>
-      <Input placeholder={input.label} id={input.name} value={newProduct[input.name]} onChange={onChangeHandler} />
+      <Input name={input.name} value={Product[input.name]} onChange={onChangeHandler} />
     </div>
   ));
 
