@@ -1,12 +1,15 @@
 import { textSlicer } from "../utils/functions";
 import Button from "./ui/Button";
+import CircleColor from "./ui/CircleColor";
 interface Iprops {
     title: string,
     imgUrl: string,
     descreiption: string,
-    price: string
+    price: string,
+    colors: string[],
 }
-const ProductCard = ({title,imgUrl,descreiption,price}: Iprops) => {
+const ProductCard = ({title,imgUrl,descreiption,price,colors}: Iprops) => {
+  const renderColor = colors.map(color=> (<CircleColor color={color} />));
   return (
     <div className="border-2 border-gray-300 rounded-3xl">
       <img
@@ -21,6 +24,9 @@ const ProductCard = ({title,imgUrl,descreiption,price}: Iprops) => {
         </p>
         <div className="flex items-center justify-between my-2">
           <h4 className="font-medium">price: {price}$</h4>
+        </div>
+        <div className="flex flex-wrap space-x-3 my-3">
+          {renderColor}
         </div>
         <div className="flex space-x-1 my-2">
             <Button name="Edit" colorBtn="green"/>

@@ -1,12 +1,14 @@
 import "./App.css";
 import ProductCard from "./components/ProductCard";
-import { productList, formInputList } from "./data";
+import { colors ,productList, formInputList } from "./data";
 import type { IFormInput, IProduct } from "./interfaces";
 import Button from "./components/ui/Button";
 import Input from "./components/ui/Input";
+import {v4 as uuid } from 'uuid';
 import {useState} from "react";
 import type {FormEvent,ChangeEvent} from 'react';
 import Modal from "./components/ui/Modal";
+import CircleColor from "./components/ui/CircleColor";
 function App() {
 const defaultProductObj = {
     title: "",
@@ -19,11 +21,11 @@ const defaultProductObj = {
       imageURL: "",
     },
 };
-
-
   // *------------STATE-----------------------
   const [isOpen, setIsOpen] = useState(false);
+  const [Products , setProducts] = useState<IProduct[]>(productList);
   const [Product , setProduct] = useState<IProduct>(defaultProductObj);
+  const [tempColor , setTempColor] = useState<string[]>([]);
 
 
   // *------------HANDLER-----------------------
@@ -34,23 +36,24 @@ const defaultProductObj = {
   setProduct({
     ... Product,
     [name]: value
-  });
-
-  }
+  });}
+  // ----------
+  // -----------
   const submitHandler =(event: FormEvent<HTMLFormElement>):void=>{
     event.preventDefault();
+    setProducts(prev=>[...prev,{...Product,id: uuid()}])
     setProduct(defaultProductObj);
-    console.log(Product);
   }
   // *------------RENDER-----------------------
  
-  const renderProductList = productList.map((product) => (
+  const renderProductList = Products.map((product) => (
     <ProductCard
       key={product.id}
       title={product.title}
       imgUrl={product.imageURL}
       descreiption={product.description}
       price={product.price}
+      colors={product.colors}
     />
   ));
 
@@ -62,6 +65,18 @@ const defaultProductObj = {
     </div>
   ));
 
+  const renderColors= colors.map(color=>(
+        <CircleColor key={color} color={color} onClick={()=>{
+          if(tempColor.includes(color)){
+            setTempColor(tempColor.filter(temp=> temp !== color));
+            return;
+          }
+          setTempColor(prev=>[...prev,color])}} />
+  ))
+  // ----------
+  const renderChoseColor= tempColor.map(color=>(
+    <span className=" p-1 mr-1 mb-1 text-xs rounded-md" style={{backgroundColor: color}}>{color}</span>
+  ))
   // =============================================================================================
   return (
     <>
@@ -70,6 +85,12 @@ const defaultProductObj = {
           <form onSubmit={submitHandler}>
             {renderFormInput}
             <div className="flex space-x-3">
+            {renderColors}
+            </div>
+            <div className="flex flex-wrap space-x-3 my-3">
+            {renderChoseColor}
+            </div>
+            <div className="flex space-x-3 my-3">
               <Button name="submit" colorBtn="green" />
               <Button name="colse" type="button" colorBtn="red" onClick={close} />
             </div>
