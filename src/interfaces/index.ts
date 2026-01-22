@@ -1,3 +1,4 @@
+import type {ProductType} from "../types/index";
 export interface IProduct {
   id?: string;
   title: string;
@@ -5,7 +6,7 @@ export interface IProduct {
   imageURL: string;
   price: string;
   colors: string[];
-  category?: {
+  category: {
     name: string;
     imageURL: string;
   };
@@ -13,8 +14,13 @@ export interface IProduct {
 
 export interface IFormInput {
   id: string;
-  name: "title" | "description" | "price" | "imageURL";
+  name: ProductType;
   label: string;
   type?: string;
 }
 
+export interface ICategory {
+  id: string,
+  name: string,
+  imageURL: string
+}
